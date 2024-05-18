@@ -15,6 +15,7 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private bool canSprint = true;
     [SerializeField] private bool canJump = true;
     [SerializeField] private bool canCrouch = true;
+    [SerializeField] private bool canUseHeadbob= true;
 
     [Header("Controls")]
     [SerializeField] private KeyCode sprintKey = KeyCode.LeftShift;
@@ -44,6 +45,16 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private Vector3 standingCenter = new Vector3(0, 0, 0);
     private bool isCrouching;
 
+    [Header("Headbobbing Parameters")]
+    [SerializeField] private float walkBobSpeed = 14f;
+    [SerializeField] private float walkBobAmount = 0.05f;
+    [SerializeField] private float sprintBobSpeed = 20f;
+    [SerializeField] private float sprintBobAmount = 0.1f;
+    [SerializeField] private float crouchBobSpeed = 10f;
+    [SerializeField] private float crouchBobAmount = 0.025f;
+    private float defaultPosY;
+    private float timer;
+
 
     private Camera playerCamera;
     private CharacterController characterController;
@@ -56,6 +67,7 @@ public class FirstPersonController : MonoBehaviour
     void Awake()
     {
         playerCamera = GetComponentInChildren<Camera>();
+        defaultPosY = playerCamera.transform.localPosition.y;
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -76,6 +88,11 @@ public class FirstPersonController : MonoBehaviour
             if (canCrouch)
             {
                 HandleCrouch();
+            }
+
+            if(canUseHeadbob)
+            {
+                HandleHeadbob();
             }
         }
     }
@@ -102,6 +119,17 @@ public class FirstPersonController : MonoBehaviour
         if (ShouldJump)
         {
             moveDirection.y = jumpForce;
+        }
+    }
+
+    private void HandleHeadbob()
+    {
+        if (!characterController.isGrounded) { return; }
+
+        if(MathF.Abs(moveDirection.x) > 0.1f|| MathF.Abs(moveDirection.z) > 0.1f)
+        {
+            timer += Time.deltaTime * (isCrouching ? crouchBobSpeed : IsSprinting ? sprintBobSpeed : walkBobSpeed);
+            playerCamera.transform.localPosition = new Vector3(playerCamera.transform.localPosition.x, defaultPosY + Mathf.Sin(timer) * (isCrouching ? crouchBobAmount : IsSprinting ? sprintBobAmount : walkBobAmount), playerCamera.transform.localPosition.z);
         }
     }
 
