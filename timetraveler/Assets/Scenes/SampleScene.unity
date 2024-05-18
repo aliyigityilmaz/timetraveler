@@ -210,7 +210,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -564,12 +564,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a662da17f0ec64249b06dbdac2ed2c68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canSprint: 1
+  canJump: 1
+  canCrouch: 1
+  sprintKey: 304
+  jumpKey: 32
+  crouchKey: 306
   walkSpeed: 3
-  gravity: 30
+  sprintSpeed: 6
+  crouchSpeed: 1.5
   lookSpeedX: 2
   lookSpeedY: 2
   upperLookLimit: 80
   lowerLookLimit: 80
+  jumpForce: 8
+  gravity: 30
+  crouchHeight: 0.5
+  standHeight: 2
+  timeToCrouch: 0.25
+  crouchingCenter: {x: 0, y: 0.5, z: 0}
+  standingCenter: {x: 0, y: 0, z: 0}
 --- !u!143 &1285820049
 CharacterController:
   m_ObjectHideFlags: 0
