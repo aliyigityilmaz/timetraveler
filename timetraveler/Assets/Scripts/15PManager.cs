@@ -115,11 +115,12 @@ public class GameManager : MonoBehaviour
                     Debug.Log("Hit normal: " + hit.normal);
 
                     int i = Int32.Parse(hit.collider.gameObject.name);
+                    Debug.Log(i);
 
-                    if (SwapIfValid(i, -size, size)) ;
-                    else if (SwapIfValid(i, +size, size)) ;
-                    else if (SwapIfValid(i, -1, 0)) ;
-                    else if (SwapIfValid(i, +1, size - 1)) ;
+                    if (SwapIfValid(i, -size, size)) { return; }
+                    if (SwapIfValid(i, +size, size)) { return; }
+                    if (SwapIfValid(i, -1, 0)) { return; }
+                    if (SwapIfValid(i, +1, size - 1)) { return; }
 
                 }
                 else
