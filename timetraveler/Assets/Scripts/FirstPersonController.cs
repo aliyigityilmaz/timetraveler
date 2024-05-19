@@ -82,9 +82,6 @@ public class FirstPersonController : MonoBehaviour
     }
     void Update()
     {
-        //MOUSE POSITION
-        Cursor.lockState = CursorLockMode.Locked;
-
         if(CanMove)
         {
             HandleMovementInput();

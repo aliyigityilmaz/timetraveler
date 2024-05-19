@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(WaitShuffle(0.5f));
             if (!firstTime)
             {
+                //PUZZLE BİTİŞ
                 Debug.Log("PUZZLE BITTI");
                 Destroy(gameTransform.gameObject);
                 finished = true;
@@ -109,18 +110,18 @@ public class GameManager : MonoBehaviour
                 // Perform the raycast
                 if (Physics.Raycast(ray, out hit))
                 {
-                    // If the ray hits something, you can access information about the hit
-                    Debug.Log("Hit object: " + hit.collider.gameObject.name);
-                    Debug.Log("Hit point: " + hit.point);
-                    Debug.Log("Hit normal: " + hit.normal);
-
-                    int i = Int32.Parse(hit.collider.gameObject.name);
-                    Debug.Log(i);
-
-                    if (SwapIfValid(i, -size, size)) { return; }
-                    if (SwapIfValid(i, +size, size)) { return; }
-                    if (SwapIfValid(i, -1, 0)) { return; }
-                    if (SwapIfValid(i, +1, size - 1)) { return; }
+                    for (int i = 0; i < pieces.Count; i++)
+                    {
+                        if (pieces[i] == hit.transform)
+                        {
+                            // Check each direction to see if valid move.
+                            // We break out on success so we don't carry on and swap back again.
+                            if (SwapIfValid(i, -size, size)) { break; }
+                            if (SwapIfValid(i, +size, size)) { break; }
+                            if (SwapIfValid(i, -1, 0)) { break; }
+                            if (SwapIfValid(i, +1, size - 1)) { break; }
+                        }
+                    }
 
                 }
                 else
