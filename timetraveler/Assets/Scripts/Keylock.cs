@@ -5,6 +5,7 @@ using UnityEngine;
 public class LockControl : MonoBehaviour
 {
     private int[] result, correctCombination;
+    public Animator animator;
 
     private void Start()
     {
@@ -37,6 +38,7 @@ public class LockControl : MonoBehaviour
         if (result[0] == correctCombination[0] && result[1] == correctCombination[1] && result[2] == correctCombination[2] && result[3] == correctCombination[3])
         {
             Debug.Log("Opened!");
+            animator.SetBool("ChestOpened", true);
         }
     }
 

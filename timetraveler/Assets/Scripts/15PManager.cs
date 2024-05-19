@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
         finished = false;
         pieces = new List<Transform>();
         size = 3;
-        CreateGamePieces(0.01f);
+        CreateGamePieces(0.05f);
     }
 
     
