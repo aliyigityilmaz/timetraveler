@@ -124,11 +124,6 @@ public class GameManager : MonoBehaviour
                     }
 
                 }
-                else
-                {
-                    // If the ray doesn't hit anything, you can handle this case here
-                    Debug.Log("No object hit.");
-                }
             }
         }
 

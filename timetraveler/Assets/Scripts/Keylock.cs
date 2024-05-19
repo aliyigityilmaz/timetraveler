@@ -29,7 +29,7 @@ public class LockControl : MonoBehaviour
                 result[2] = number;
                 break;
             case "wheel4":
-                result[2] = number;
+                result[3] = number;
                 break;
         }
 
