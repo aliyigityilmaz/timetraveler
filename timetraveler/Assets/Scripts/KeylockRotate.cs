@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +16,13 @@ public class Rotate : MonoBehaviour
         coroutineAllowed = true;
         numberShown = 0;
     }
+
+
+    //private void OnMouseDown()
+    //{
+    //    int randomNumber = UnityEngine.Random.Range(1, 10); // Örnek bir rasgele sayı oluştur
+    //    Rotated?.Invoke(gameObject.name, randomNumber); // Rotated olayını tetikle
+    //}
 
     private void OnMouseDown()
     {

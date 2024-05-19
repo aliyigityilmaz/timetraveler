@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -88,6 +89,52 @@ public class GameManager : MonoBehaviour
             firstTime = false;
         }
 
+        if (Input.GetMouseButtonDown(0)) // Change 0 to 1 for right mouse button
+        {
+            // Get the main camera
+            Camera mainCamera = Camera.main;
+
+            // Check if the main camera exists
+            if (mainCamera != null)
+            {
+                // Get the mouse position
+                Vector3 mousePosition = Input.mousePosition;
+
+                // Create a ray from the camera through the mouse position
+                Ray ray = mainCamera.ScreenPointToRay(mousePosition);
+
+                // Create a RaycastHit variable to store information about the hit
+                RaycastHit hit;
+
+                // Perform the raycast
+                if (Physics.Raycast(ray, out hit))
+                {
+                    // If the ray hits something, you can access information about the hit
+                    Debug.Log("Hit object: " + hit.collider.gameObject.name);
+                    Debug.Log("Hit point: " + hit.point);
+                    Debug.Log("Hit normal: " + hit.normal);
+
+                    int i = Int32.Parse(hit.collider.gameObject.name);
+
+                    if (SwapIfValid(i, -size, size)) ;
+                    else if (SwapIfValid(i, +size, size)) ;
+                    else if (SwapIfValid(i, -1, 0)) ;
+                    else if (SwapIfValid(i, +1, size - 1)) ;
+
+                }
+                else
+                {
+                    // If the ray doesn't hit anything, you can handle this case here
+                    Debug.Log("No object hit.");
+                }
+            }
+        }
+
+
+
+
+        /*
+
         // On click send out ray to see if we click a piece.
         if (Input.GetMouseButtonDown(0) && !finished)
         {
@@ -109,6 +156,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        */
     }
 
     // colCheck is used to stop horizontal moves wrapping.
@@ -155,7 +203,7 @@ public class GameManager : MonoBehaviour
         while (count < (size * size * size * size))
         {
             // Pick a random location.
-            int rnd = Random.Range(0, size * size);
+            int rnd = UnityEngine.Random.Range(0, size * size);
             // Only thing we forbid is undoing the last move.
             if (rnd == last) { continue; }
             last = emptyLocation;
