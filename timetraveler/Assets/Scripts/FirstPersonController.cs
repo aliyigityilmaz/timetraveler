@@ -77,6 +77,14 @@ public class FirstPersonController : MonoBehaviour
     public GameObject batteryObject;
     public Animator freddyAnimator;
 
+    //ENVANTERE GALAXYMAP ALMA
+    private bool galaxymap;
+    public GameObject galaxymapobject;
+
+    //ENVANTERE EGYPTMAP ALMA
+    private bool egyptmap;
+    public GameObject egyptmapobject;
+
     void Awake()
     {
         playerCamera = GetComponentInChildren<Camera>();
@@ -85,6 +93,8 @@ public class FirstPersonController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         battery = false;
+        galaxymap = false;
+        egyptmap = false;
     }
     void Update()
     {
@@ -154,6 +164,20 @@ public class FirstPersonController : MonoBehaviour
                     {
                         Debug.Log("freddy çalışmaya başladı");
                         freddyAnimator.SetBool("EnableFreddy", true);
+                    }
+                    else if (hitname == "Galaxymap")
+                    {
+                        galaxymap = true;
+                        Destroy(galaxymapobject);
+
+                        //I TUŞU İLE GALAKSİ ÇAĞINA GİDEBİLİRSİN MESAJI
+                    }
+                    else if (hitname == "Egyptmap")
+                    {
+                        galaxymap = true;
+                        Destroy(egyptmapobject);
+
+                        //U TUŞU İLE GALAKSİ ÇAĞINA GİDEBİLİRSİN MESAJI
                     }
                 }
                 else

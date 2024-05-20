@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
     bool firstTime;
     bool finished;
 
+    public MeshRenderer mapmesh;
+    public BoxCollider mapcollider;
+
     // Create the game setup with size x size pieces.
     private void CreateGamePieces(float gapThickness)
     {
@@ -83,6 +86,8 @@ public class GameManager : MonoBehaviour
             {
                 //PUZZLE BİTİŞ
                 Debug.Log("PUZZLE BITTI");
+                mapcollider.enabled = true;
+                mapmesh.enabled = true;
                 Destroy(gameTransform.gameObject);
                 finished = true;
                 return;
