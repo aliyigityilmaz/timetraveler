@@ -15,6 +15,12 @@ public class Teleport : MonoBehaviour
     [Header("TeleportPoints")]
     public GameObject egyptTeleport;
     public GameObject futureTeleport;
+
+
+    public AudioSource egyptMusic;
+    public AudioSource futuristicMusic;
+    public AudioSource modernMusic;
+
     // Start is called before the first frame update
     void Start()
     {
