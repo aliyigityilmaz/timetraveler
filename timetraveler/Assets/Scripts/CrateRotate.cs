@@ -55,11 +55,6 @@ public class CrateRotate : MonoBehaviour
                 // Perform the raycast
                 if (Physics.Raycast(ray, out hit))
                 {
-                    // If the ray hits something, you can access information about the hit
-                    Debug.Log("Hit object: " + hit.collider.gameObject.name);
-                    Debug.Log("Hit point: " + hit.point);
-                    Debug.Log("Hit normal: " + hit.normal);
-
                     if(gameObject.name == hit.collider.gameObject.name)
                         if (coroutineAllowed)
                             {

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
@@ -72,6 +72,11 @@ public class FirstPersonController : MonoBehaviour
 
     private float rotationX = 0;
 
+    //ENVANTERE BATARYA ALMA
+    private bool battery;
+    public GameObject batteryObject;
+    public Animator freddyAnimator;
+
     void Awake()
     {
         playerCamera = GetComponentInChildren<Camera>();
@@ -79,6 +84,7 @@ public class FirstPersonController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        battery = false;
     }
     void Update()
     {
@@ -107,6 +113,54 @@ public class FirstPersonController : MonoBehaviour
             {
                 HandleInteractionCheck();
                 HandleInteractionInput();
+            }
+        }
+
+
+
+        //ENVANTERE BATARYA ALMA/KULLANMA
+
+        if (Input.GetMouseButtonDown(0)) // Change 0 to 1 for right mouse button
+        {
+
+            // Get the main camera
+            Camera mainCamera = Camera.main;
+
+            // Check if the main camera exists
+            if (mainCamera != null)
+            {
+                // Get the mouse position
+                Vector3 mousePosition = Input.mousePosition;
+
+                // Create a ray from the camera through the mouse position
+                Ray ray = mainCamera.ScreenPointToRay(mousePosition);
+
+                // Create a RaycastHit variable to store information about the hit
+                RaycastHit hit;
+
+                // Perform the raycast
+                if (Physics.Raycast(ray, out hit))
+                {
+                    // If the ray hits something, you can access information about the hit
+                    string hitname = hit.collider.gameObject.name;
+
+                    //batarya varsa topla, batarya varken freddye basınca oyunu bitirme animasyonunu oynat
+                    if (hitname == "Battery")
+                    {
+                        battery = true;
+                        Destroy(batteryObject);
+                    }
+                    else if (hitname == "Freddy" && battery)
+                    {
+                        Debug.Log("freddy çalışmaya başladı");
+                        freddyAnimator.SetBool("EnableFreddy", true);
+                    }
+                }
+                else
+                {
+                    // If the ray doesn't hit anything, you can handle this case here
+                    Debug.Log("No object hit.");
+                }
             }
         }
     }

@@ -6,6 +6,7 @@ public class CrateLockControl : MonoBehaviour
 {
     private int[] result, correctCombination;
     public Animator animator;
+    public BoxCollider collider;
 
     private void Start()
     {
@@ -48,6 +49,7 @@ public class CrateLockControl : MonoBehaviour
             animator.SetBool("CrateOpened", true);
             for(int i = 2; i < 8; i++)
                 Destroy(transform.GetChild(i).gameObject);
+            collider.enabled = false;
         }
     }
 
