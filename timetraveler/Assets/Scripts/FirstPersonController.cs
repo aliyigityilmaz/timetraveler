@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FirstPersonController : MonoBehaviour
 {
@@ -17,12 +18,14 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private bool canCrouch = true;
     [SerializeField] private bool canUseHeadbob= true;
     [SerializeField] private bool canInteract = true;
+    [SerializeField] private bool canZoom = true;
 
     [Header("Controls")]
     [SerializeField] private KeyCode sprintKey = KeyCode.LeftShift;
     [SerializeField] private KeyCode jumpKey = KeyCode.Space;
     [SerializeField] private KeyCode crouchKey = KeyCode.LeftControl;
     [SerializeField] private KeyCode interactKey = KeyCode.Mouse0;
+    [SerializeField] private KeyCode zoomKey = KeyCode.Mouse1;
 
     [Header("Movement Parameters")]
     [SerializeField] private float walkSpeed = 3.0f;
@@ -57,6 +60,12 @@ public class FirstPersonController : MonoBehaviour
     private float defaultPosY;
     private float timer;
 
+    [Header("Zoom")]
+    [SerializeField] private float timeToZoom = 0.3f;
+    [SerializeField] private float zoomFOV = 30f;
+    private float defaultFOV;
+    private Coroutine zoomCoroutine;
+
     [Header("Interaction")]
     [SerializeField] private Vector3 interactionRayPoint = default;
     [SerializeField] private float interactionDistance = default;
@@ -76,13 +85,14 @@ public class FirstPersonController : MonoBehaviour
     private bool battery;
     public GameObject batteryObject;
     public Animator freddyAnimator;
+    public Text youWin;
 
     //ENVANTERE GALAXYMAP ALMA
-    private bool galaxymap;
+    public bool galaxymap;
     public GameObject galaxymapobject;
 
     //ENVANTERE EGYPTMAP ALMA
-    private bool egyptmap;
+    public bool egyptmap;
     public GameObject egyptmapobject;
 
     void Awake()
@@ -92,9 +102,11 @@ public class FirstPersonController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        defaultFOV = playerCamera.fieldOfView;
         battery = false;
         galaxymap = false;
         egyptmap = false;
+        youWin.gameObject.SetActive(false);
     }
     void Update()
     {
@@ -123,6 +135,11 @@ public class FirstPersonController : MonoBehaviour
             {
                 HandleInteractionCheck();
                 HandleInteractionInput();
+            }
+
+            if(canZoom)
+            {
+                HandleZoom();
             }
         }
 
@@ -164,6 +181,7 @@ public class FirstPersonController : MonoBehaviour
                     {
                         Debug.Log("freddy çalışmaya başladı");
                         freddyAnimator.SetBool("EnableFreddy", true);
+                        youWin.gameObject.SetActive(true);
                     }
                     else if (hitname == "Galaxymap")
                     {
@@ -174,7 +192,7 @@ public class FirstPersonController : MonoBehaviour
                     }
                     else if (hitname == "Egyptmap")
                     {
-                        galaxymap = true;
+                        egyptmap = true;
                         Destroy(egyptmapobject);
 
                         //U TUŞU İLE GALAKSİ ÇAĞINA GİDEBİLİRSİN MESAJI
@@ -187,6 +205,46 @@ public class FirstPersonController : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void HandleZoom()
+    {
+        if(Input.GetKeyDown(zoomKey))
+        {
+            if (zoomCoroutine != null)
+            {
+                StopCoroutine(zoomCoroutine);
+                zoomCoroutine = null;
+            }
+
+            zoomCoroutine = StartCoroutine(Zoom(true));
+        }
+        else if(Input.GetKeyUp(zoomKey))
+        {
+            if (zoomCoroutine != null)
+            {
+                StopCoroutine(zoomCoroutine);
+                zoomCoroutine = null;
+            }
+
+            zoomCoroutine = StartCoroutine(Zoom(false));
+        }
+    }
+
+    IEnumerator Zoom(bool isEnter)
+    {
+        float targetFov = isEnter ? zoomFOV : defaultFOV;
+        float startFov = playerCamera.fieldOfView;
+        float timeElapsed = 0;
+
+        while(timeElapsed<timeToZoom)
+        {
+            playerCamera.fieldOfView = Mathf.Lerp(startFov, targetFov, timeElapsed / timeToZoom);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+        playerCamera.fieldOfView = targetFov;
+        zoomCoroutine = null;
     }
 
     private void ApplyFinalMovements()
