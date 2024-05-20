@@ -17,14 +17,18 @@ public class Teleport : MonoBehaviour
     public GameObject futureTeleport;
 
 
-    public AudioSource egyptMusic;
-    public AudioSource futuristicMusic;
-    public AudioSource modernMusic;
+    public AudioClip egyptMusic;
+    public AudioClip futuristicMusic;
+    public AudioClip modernMusic;
+
+    private AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
     {
         player = this.gameObject;
+        audioSource = GetComponent<AudioSource>();
+        audioSource.Play();
     }
 
     // Update is called once per frame
@@ -60,11 +64,15 @@ public class Teleport : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.U) && player.GetComponent<FirstPersonController>().egyptmap == true)
             {
+                audioSource.clip = egyptMusic;
+                audioSource.Play();
                 StartCoroutine(Teleporting(egyptTeleport));
                 Debug.Log("Teleporting to Egypt");
             }
             if(Input.GetKeyDown(KeyCode.I) && player.GetComponent<FirstPersonController>().galaxymap == true)
             {
+                audioSource.clip = futuristicMusic;
+                audioSource.Play();
                 StartCoroutine(Teleporting(futureTeleport));
             }
         }
