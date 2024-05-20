@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class FirstPersonController : MonoBehaviour
@@ -143,6 +144,10 @@ public class FirstPersonController : MonoBehaviour
             }
         }
 
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(0);
+        }
 
 
         //ENVANTERE BATARYA ALMA/KULLANMA
